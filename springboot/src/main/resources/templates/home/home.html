@@ -5,7 +5,24 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h3>hello</h3>
+	<div th:include="footer::copy(${age})"></div>
+	<h3 class="hehe">hello</h3>
 	<h3 th:text="${message}">hello,spring boot!</h3>
+	<h3 th:if="${age > 15}">hello,age</h3>
+	<h3 th:each="var : ${lists}" th:text="${var}"></h3>
+	<a th:href="@{/localhost(id=${age})}">删除</a>
+	<a th:href="@{/localhost/{id}(id=${age})}">删除</a>
 </body>
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:inline="javascript">
+	$(function(){
+		$(".hehe").click(function(){
+			[# th:if="2 == 1"]
+			var age= [[${age}]]
+			alert(age)
+			[/]
+			
+		})
+	})
+</script>
 </html>
