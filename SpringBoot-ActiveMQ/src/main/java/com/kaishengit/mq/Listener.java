@@ -1,4 +1,4 @@
-package com.kaishengit.mq.listener;
+package com.kaishengit.mq;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
