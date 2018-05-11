@@ -1,0 +1,5 @@
+<ehcache>
+	<cache name="user" maxEntriesLocalHeap="200"
+		timeToLiveSeconds="10">
+	</cache>
+</ehcache>
