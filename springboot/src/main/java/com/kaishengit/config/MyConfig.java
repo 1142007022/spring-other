@@ -1,7 +1,5 @@
 package com.kaishengit.config;
 
-import javax.servlet.ServletContextListener;
-
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +11,8 @@ import com.kaishengit.filter.MyFilter;
 import com.kaishengit.interceptor.MyInterceptor;
 import com.kaishengit.listener.MyListener;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
+
 @Configuration
 public class MyConfig extends WebMvcConfigurerAdapter{
 
@@ -23,6 +23,7 @@ public class MyConfig extends WebMvcConfigurerAdapter{
 		filterRegistrationBean.setFilter(new MyFilter());
 		filterRegistrationBean.addUrlPatterns("/*");
 		return filterRegistrationBean;
+		
 	}
 	
 	//添加拦截器
