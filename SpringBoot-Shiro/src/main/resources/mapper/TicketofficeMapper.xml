@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kaishengit.mapper.TicketofficeMapper">
+
+  <select id="findAll" resultMap="ticketofficeWtihSaleAccount">
+    SELECT
+        ticketoffice.id AS id,
+        NAME,
+        sale_account_id,
+        `status`,
+        ticket_num,
+        place,
+        business_licence_key,
+        id_card_key,
+        mobile,
+        `password`,
+        ticketoffice_id,
+        account_name
+    FROM
+        ticketoffice
+    INNER JOIN sale_account ON ticketoffice.sale_account_id = sale_account.id
+  </select>
+
+  <resultMap id="ticketofficeWtihSaleAccount" type="Ticketoffice">
+    <id property="id" column="id"/>
+    <result property="name" column="name"/>
+    <result property="saleAccountId" column="sale_account_id"/>
+    <result property="ticketNum" column="ticket_num"/>
+    <result property="businessLicenceKey" column="business_licence_key"/>
+    <result property="idCardKey" column="id_card_key"/>
+    <result property="status" column="status"/>
+    <result property="place" column="place"/>
+    <collection property="saleAccount" ofType="SaleAccount">
+      <id property="id" column="sale_account_id"/>
+      <result property="accountName" column="account_name"/>
+      <result property="ticketofficeId" column="ticketoffice_id"/>
+      <result property="mobile" column="mobile"/>
+      <result property="password" column="password"/>
+    </collection>
+  </resultMap>
+
+  <resultMap id="BaseResultMap" type="com.kaishengit.entitys.Ticketoffice">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="sale_account_id" jdbcType="INTEGER" property="saleAccountId" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="ticket_num" jdbcType="INTEGER" property="ticketNum" />
+    <result column="id_card_key" jdbcType="VARCHAR" property="idCardKey" />
+    <result column="place" jdbcType="VARCHAR" property="place" />
+    <result column="business_licence_key" jdbcType="VARCHAR" property="businessLicenceKey" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, name, sale_account_id, status, ticket_num, id_card_key, place, business_licence_key
+  </sql>
+  <select id="selectByExample" parameterType="com.kaishengit.entitys.TicketofficeExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ticketoffice
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ticketoffice
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ticketoffice
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.kaishengit.entitys.TicketofficeExample">
+    delete from ticketoffice
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.kaishengit.entitys.Ticketoffice" useGeneratedKeys="true" keyProperty="id">
+    insert into ticketoffice (id, name, sale_account_id, 
+      status, ticket_num, id_card_key, 
+      place, business_licence_key)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{saleAccountId,jdbcType=INTEGER}, 
+      #{status,jdbcType=VARCHAR}, #{ticketNum,jdbcType=INTEGER}, #{idCardKey,jdbcType=VARCHAR}, 
+      #{place,jdbcType=VARCHAR}, #{businessLicenceKey,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.kaishengit.entitys.Ticketoffice">
+    insert into ticketoffice
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="saleAccountId != null">
+        sale_account_id,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="ticketNum != null">
+        ticket_num,
+      </if>
+      <if test="idCardKey != null">
+        id_card_key,
+      </if>
+      <if test="place != null">
+        place,
+      </if>
+      <if test="businessLicenceKey != null">
+        business_licence_key,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="saleAccountId != null">
+        #{saleAccountId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="ticketNum != null">
+        #{ticketNum,jdbcType=INTEGER},
+      </if>
+      <if test="idCardKey != null">
+        #{idCardKey,jdbcType=VARCHAR},
+      </if>
+      <if test="place != null">
+        #{place,jdbcType=VARCHAR},
+      </if>
+      <if test="businessLicenceKey != null">
+        #{businessLicenceKey,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.kaishengit.entitys.TicketofficeExample" resultType="java.lang.Long">
+    select count(*) from ticketoffice
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update ticketoffice
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null">
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.saleAccountId != null">
+        sale_account_id = #{record.saleAccountId,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ticketNum != null">
+        ticket_num = #{record.ticketNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.idCardKey != null">
+        id_card_key = #{record.idCardKey,jdbcType=VARCHAR},
+      </if>
+      <if test="record.place != null">
+        place = #{record.place,jdbcType=VARCHAR},
+      </if>
+      <if test="record.businessLicenceKey != null">
+        business_licence_key = #{record.businessLicenceKey,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update ticketoffice
+    set id = #{record.id,jdbcType=INTEGER},
+      name = #{record.name,jdbcType=VARCHAR},
+      sale_account_id = #{record.saleAccountId,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=VARCHAR},
+      ticket_num = #{record.ticketNum,jdbcType=INTEGER},
+      id_card_key = #{record.idCardKey,jdbcType=VARCHAR},
+      place = #{record.place,jdbcType=VARCHAR},
+      business_licence_key = #{record.businessLicenceKey,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kaishengit.entitys.Ticketoffice">
+    update ticketoffice
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="saleAccountId != null">
+        sale_account_id = #{saleAccountId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="ticketNum != null">
+        ticket_num = #{ticketNum,jdbcType=INTEGER},
+      </if>
+      <if test="idCardKey != null">
+        id_card_key = #{idCardKey,jdbcType=VARCHAR},
+      </if>
+      <if test="place != null">
+        place = #{place,jdbcType=VARCHAR},
+      </if>
+      <if test="businessLicenceKey != null">
+        business_licence_key = #{businessLicenceKey,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kaishengit.entitys.Ticketoffice">
+    update ticketoffice
+    set name = #{name,jdbcType=VARCHAR},
+      sale_account_id = #{saleAccountId,jdbcType=INTEGER},
+      status = #{status,jdbcType=VARCHAR},
+      ticket_num = #{ticketNum,jdbcType=INTEGER},
+      id_card_key = #{idCardKey,jdbcType=VARCHAR},
+      place = #{place,jdbcType=VARCHAR},
+      business_licence_key = #{businessLicenceKey,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

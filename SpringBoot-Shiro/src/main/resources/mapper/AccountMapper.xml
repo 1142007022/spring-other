@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kaishengit.mapper.AccountMapper">
+
+
+  <select id="findRolesOfAccountByAcctId" parameterType="int" resultMap="findRolesOfAccountByAcctId">
+
+    SELECT
+        roles_id,
+        roles_code,
+        roles_name
+    FROM
+        account
+    INNER JOIN (
+        SELECT
+            *
+        FROM
+            account_roles
+        INNER JOIN roles ON account_roles.roles_id = roles.id
+    ) AS t ON t.account_id = account.id
+    WHERE
+        account.id = #{id}
+
+  </select>
+
+
+  <resultMap id="findRolesOfAccountByAcctId" type="Roles">
+    <id property="id" column="roles_id"/>
+    <result property="rolesCode" column="roles_code"/>
+    <result property="rolesName" column="roles_name"/>
+  </resultMap>
+
+  <select id="findByMobile" parameterType="string" resultType="Account">
+          SELECT
+              id ,
+              mobile,
+              `password`,
+              `status`,
+              acc_name
+          FROM
+              account
+          WHERE
+              mobile = #{mobile}
+  </select>
+
+  <select id="findAccountWithParam" parameterType="map" resultMap="BaseAccountWithRoles">
+        SELECT
+        account_id,
+        mobile,
+        `password`,
+        `status`,
+        acc_name,
+        roles_name,
+        roles_id,
+        roles_code
+        FROM
+        account
+        INNER JOIN (
+        SELECT
+        *
+        FROM
+        account_roles
+        INNER JOIN roles ON account_roles.roles_id = roles.id
+        ) AS t ON t.account_id = account.id
+    <where>
+      <if test="mobile != null and mobile != ''">
+        mobile = #{mobile}
+      </if>
+      <if test="rolesId != null and rolesId != '' ">
+        AND roles_id = #{rolesId}
+      </if>
+    </where>
+  </select>
+
+
+  <resultMap id="BaseAccountWithRoles" type="Account">
+    <id column="account_id"  property="id" />
+    <result column="mobile" property="mobile" />
+    <result column="password"  property="password" />
+    <result column="status"  property="status" />
+    <result column="acc_name"  property="accName" />
+    <collection property="roles" ofType="Roles">
+      <id property="id" column="roles_id"/>
+      <result property="rolesName" column="roles_name"/>
+      <result property="rolesCode" column="roles_code"/>
+    </collection>
+  </resultMap>
+
+
+    <select id="findById" resultMap="AccountWithRoles">
+         SELECT
+            account.id,
+            mobile,
+          `password`,
+            `status`,
+            acc_name,
+            roles_name
+        FROM
+            account
+        INNER JOIN (
+            SELECT
+                *
+            FROM
+                account_roles
+            INNER JOIN roles ON account_roles.roles_id = roles.id
+        ) AS t ON t.account_id = account.id where account.id = #{id}
+    </select>
+
+  <select id="findAll" resultMap="AccountWithRoles" parameterType="int">
+         SELECT
+                account.id,
+                mobile,
+              `password`,
+                `status`,
+                acc_name,
+                roles_name
+            FROM
+                account
+            INNER JOIN (
+                SELECT
+                    *
+                FROM
+                    account_roles
+                INNER JOIN roles ON account_roles.roles_id = roles.id
+            ) AS t ON t.account_id = account.id
+  </select>
+
+
+<resultMap id="AccountWithRoles" type="com.kaishengit.entitys.Account">
+  <id property="id" column="id"/>
+  <result property="mobile" column="mobile"/>
+  <result property="password" column="password"/>
+  <result property="status" column="status"/>
+  <result property="accName" column="acc_name"/>
+  <collection property="roles" ofType="Roles">
+     <result property="rolesName" column="roles_name"/>
+  </collection>
+</resultMap>
+
+
+  <resultMap id="BaseResultMap" type="com.kaishengit.entitys.Account">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="acc_name" jdbcType="VARCHAR" property="accName" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, mobile, password, status, acc_name
+  </sql>
+  <select id="selectByExample" parameterType="com.kaishengit.entitys.AccountExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from account
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="AccountWithRoles">
+    select 
+    <include refid="Base_Column_List" />
+    from account
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from account
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.kaishengit.entitys.AccountExample">
+    delete from account
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.kaishengit.entitys.Account" useGeneratedKeys="true" keyProperty="id">
+    insert into account (id, mobile, password, 
+      status, acc_name)
+    values (#{id,jdbcType=INTEGER}, #{mobile,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{accName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.kaishengit.entitys.Account">
+    insert into account
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="mobile != null">
+        mobile,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="accName != null">
+        acc_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="mobile != null">
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="accName != null">
+        #{accName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.kaishengit.entitys.AccountExample" resultType="java.lang.Long">
+    select count(*) from account
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update account
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.mobile != null">
+        mobile = #{record.mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="record.password != null">
+        password = #{record.password,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.accName != null">
+        acc_name = #{record.accName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update account
+    set id = #{record.id,jdbcType=INTEGER},
+      mobile = #{record.mobile,jdbcType=VARCHAR},
+      password = #{record.password,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=VARCHAR},
+      acc_name = #{record.accName,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kaishengit.entitys.Account">
+    update account
+    <set>
+      <if test="mobile != null">
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="accName != null">
+        acc_name = #{accName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kaishengit.entitys.Account">
+    update account
+    set mobile = #{mobile,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      acc_name = #{accName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
