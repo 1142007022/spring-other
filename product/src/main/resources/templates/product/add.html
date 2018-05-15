@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/datetimepicker/css/bootstrap-datetimepicker.css">
+</head>
+<body>
+
+    <div class="container">
+        <form method="post" >
+            <div class="form-group">
+                <label>商品名称</label>
+                <input type="text" name="name" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>商品副标题</label>
+                <input type="text" name="title" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>库存数量</label>
+                <input type="text" name="num" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>销售价格</label>
+                <input type="text" name="price" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>市场价格</label>
+                <input type="text" name="marketPrice" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>开始时间</label>
+                <input type="text" name="startTime" id="startTime" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>结束时间</label>
+                <input type="text" name="endTime" id="endTime" class="form-control">
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary">保存</button>
+            </div>
+        </form>
+    </div>
+    <script src="/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/moment/moment.js"></script>
+    <script src="/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script>
+        $(function(){
+            $("#startTime,#endTime").datetimepicker({
+                format: 'yyyy-mm-dd hh:ii',
+                autoclose:true,
+                todayHighlight:true,
+                language:'zh-CN'
+            });
+        })
+    </script>
+</body>
+</html>

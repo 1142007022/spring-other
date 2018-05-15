@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/bootsrap/css/bootstrap.min.css">
+    <style>
+        .underline {
+            text-decoration: line-through;
+            color: #ccc;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <h3>[[${product.name}]] <small th:text="${product.title}"></small></h3>
+        <hr>
+        <p>
+            销售价格: <span th:text="${product.price}"></span>
+            市场价格： <span class="underline" th:text="${product.marketPrice}"></span>
+        </p>
+        <button class="btn btn-default disabled" th:if="${not product.start}">未开始 <span id="countDown"></span></button>
+        <button class="btn btn-default disabled" th:if="${product.end}">已结束</button>
+        <button class="btn btn-default disabled" th:if="${product.num == 0}">已售罄</button>
+        <button id="buyButton" class="btn btn-danger" th:if="${product.start and not product.end and product.num != 0}">抢购</button>
+    </div>
+    <script src="/jQuery/jquery.min.js"></script>
+</body>
+</html>
