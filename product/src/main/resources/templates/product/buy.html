@@ -26,6 +26,21 @@
         <button class="btn btn-default disabled" th:if="${product.num == 0}">已售罄</button>
         <button id="buyButton" class="btn btn-danger" th:if="${product.start and not product.end and product.num != 0}">抢购</button>
     </div>
-    <script src="/jQuery/jquery.min.js"></script>
+    <script src="/jQuery/jquery-2.2.3.min.js"></script>
+    <script>
+    	$(function(){
+    		$("#buyButton").click(function(){
+    			var id = [[${product.id}]];
+    			$.ajax({
+    				type: "get",
+    				url : "/product/buy/"+id,
+    				success : function(data){
+    					alert(data.message)
+    					history.go(0);
+    				}
+    			})
+    		})
+    	})
+    </script>
 </body>
 </html>

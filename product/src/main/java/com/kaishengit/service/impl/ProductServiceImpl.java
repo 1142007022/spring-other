@@ -9,16 +9,12 @@ import org.quartz.CronScheduleBuilder;
 import org.quartz.JobBuilder;
 import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
-import org.quartz.ScheduleBuilder;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
-import org.quartz.impl.calendar.CronCalendar;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.stereotype.Service;
 
@@ -94,7 +90,28 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public Product findById(Integer id) {
-		return productMapper.selectByPrimaryKey(id);
+		return JSON.parseObject(redisTemplate.opsForValue().get("product:" + id), Product.class);
+	}
+
+	@Override
+	public void buy(Integer id) throws RuntimeException {
+		
+		String json = redisTemplate.opsForValue().get("product:"+id);
+        Product product = JSON.parseObject(json,Product.class);
+
+        if(!product.isStart()) {
+            throw new RuntimeException("你来早了，还没有开始");
+        }
+        if(product.isEnd()) {
+            throw  new RuntimeException("抢购已结束");
+        }
+        
+        if(redisTemplate.opsForList().leftPop("product:"+id+"num") != null) {
+        	System.out.println("购买成功");
+        }else {
+        	System.out.println("已售罄");
+        }
+		
 	}
 	
 }

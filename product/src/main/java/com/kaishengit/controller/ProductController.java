@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.github.pagehelper.PageInfo;
 import com.kaishengit.entitys.Product;
+import com.kaishengit.result.Result;
 import com.kaishengit.service.ProductService;
 
 @RequestMapping("/product")
@@ -52,7 +54,17 @@ public class ProductController {
 		
 	}
 	
-	
+	@GetMapping("/buy/{id}")
+	@ResponseBody
+	public Result buy(@PathVariable Integer id) {
+		try {
+			productService.buy(id);
+			return new Result("抢购成功");
+		} catch (Exception e) {
+			return new Result(e.getMessage());
+		}
+		
+	}
 	
 	
 }

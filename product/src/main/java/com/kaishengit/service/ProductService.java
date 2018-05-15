@@ -11,4 +11,6 @@ public interface ProductService {
 
 	Product findById(Integer id);
 
+	void buy(Integer id) throws RuntimeException;
+
 }
