@@ -53,7 +53,7 @@ public class ShiroConfig {
         
         //设置路径的过滤规则
         LinkedHashMap<String, String> map = new LinkedHashMap<>();
-        map.put("/login", "anno");
+        map.put("/login", "anon");
         map.put("/**","jwt");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(map);
         return shiroFilterFactoryBean;
