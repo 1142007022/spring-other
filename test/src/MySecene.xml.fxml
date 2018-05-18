@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="265.0" prefWidth="290.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Button layoutX="51.0" layoutY="22.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="189.0" text="点击我" />
+      <TextArea layoutX="51.0" layoutY="65.0" prefHeight="200.0" prefWidth="200.0" />
+      <Pane layoutX="-223.0" layoutY="65.0" prefHeight="200.0" prefWidth="200.0" />
+   </children>
+</AnchorPane>
