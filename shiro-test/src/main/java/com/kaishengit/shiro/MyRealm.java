@@ -4,10 +4,10 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
-import org.apache.shiro.realm.SimpleAccountRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 
 
@@ -30,7 +30,13 @@ public class MyRealm extends AuthorizingRealm {
 	//负责验证登录
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-		return null;
+		
+		UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken)token;
+		
+		//先获取当前账户的登录帐号
+		String name = usernamePasswordToken.getUsername();
+		//根据这个name进行相关的验证  先根据name进行数据库查找 等等
+		return new SimpleAuthenticationInfo(null,null,getName());//第一个参数设置查找到的account  第二是account.get密码
 	}
 
 }
