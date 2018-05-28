@@ -24,6 +24,22 @@ public class CustomerFilterChainDefiniton {
 	
 	
 	
+	public Map<String, String> getFilterChainDefinitions() {
+		return filterChainDefinitions;
+	}
+
+	public void setFilterChainDefinitions(Map<String, String> filterChainDefinitions) {
+		this.filterChainDefinitions = filterChainDefinitions;
+	}
+
+	public AbstractShiroFilter getAbstractShiroFilter() {
+		return abstractShiroFilter;
+	}
+
+	public void setAbstractShiroFilter(AbstractShiroFilter abstractShiroFilter) {
+		this.abstractShiroFilter = abstractShiroFilter;
+	}
+
 	//写一个初始化加载的方法 并且保证是线程安全的
 	@PostConstruct
 	public synchronized void init() {
