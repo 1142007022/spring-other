@@ -73,10 +73,10 @@ public class CustomerFilterChainDefiniton {
         for(Permission permission : permissionList) {
             //将每个权限对应的url加入到map中 "perms["+permission.getPermissionCode()+"]")
         }
-        urlMap.put("/**","user");
+        urlMap.put("/**","user");//放到最后
 
         //URL和权限的关系设置到shiroFilter中
-        DefaultFilterChainManager defaultFilterChainManager = null;
+        DefaultFilterChainManager defaultFilterChainManager = getFilterChainManager();
         for(Map.Entry<String,String> entry : urlMap.entrySet()) {
             defaultFilterChainManager.createChain(entry.getKey(),entry.getValue());
         }
