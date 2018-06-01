@@ -70,7 +70,7 @@ public class ShiroRealm extends AuthorizingRealm{
         }
 
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
-        simpleAuthorizationInfo.addRoles(rolesSet);
+        simpleAuthorizationInfo.setRoles(rolesSet);
         simpleAuthorizationInfo.setStringPermissions(powerSet);
 
         return simpleAuthorizationInfo;
@@ -82,10 +82,10 @@ public class ShiroRealm extends AuthorizingRealm{
         UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken) authenticationToken;
 
         String mobile = usernamePasswordToken.getUsername();
-        System.out.println("mobile-----"+mobile);
+        //System.out.println("mobile-----"+mobile);
         if (mobile != null) {
             Account account = accountService.findByMobile(mobile);
-            System.out.println("name---"+account.getAccName());
+            //System.out.println("name---"+account.getAccName());
             if (account == null) {
                 throw new UnknownAccountException("账户或者密码错误" + mobile);
             }else{
