@@ -35,7 +35,7 @@ public class ShiroConfig {
         logger.error("没有权限访问该资源");
     }
 
-
+    
     @Bean
     public Realm realm() {
         return new ShiroRealm();
