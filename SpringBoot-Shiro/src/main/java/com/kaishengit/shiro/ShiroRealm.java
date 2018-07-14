@@ -28,6 +28,11 @@ import com.kaishengit.entitys.Roles;
 import com.kaishengit.service.AccountService;
 import com.kaishengit.service.PowerService;
 
+/**
+ * @author Administrator
+ * 这个类主要用来动态的生成后台的路径 权限 集合
+ *
+ */
 public class ShiroRealm extends AuthorizingRealm{
 
     private Logger logger = LoggerFactory.getLogger(ShiroRealm.class);

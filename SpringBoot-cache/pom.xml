@@ -26,8 +26,7 @@
 	</properties>
 
 	<dependencies>
-
-
+		<!-- ecache -->
 		<dependency>
 			<groupId>net.sf.ehcache</groupId>
 			<artifactId>ehcache</artifactId>
